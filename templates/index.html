@@ -2,12 +2,17 @@
 <html>
 <head>
     <title>Are We There Yet?</title>
-    <script>
-        function generateLocOne() {
-            document.getElementById("locOne").innerHTML = "Paragraph changed.";
+    <style>
+        .container {
+        display: flex;
+        align-items: center;
         }
-    </script>
-    <!-- Other head elements can go here, like meta tags, stylesheets, etc. -->
+
+        button {
+        margin-left: 10px;
+        /* button styles go here */
+        }
+    </style>
 </head>
 <body>
     <h1>Are We There Yet?</h1>
@@ -17,27 +22,38 @@
     <h2>2. Your goal is to guess the amount of time it takes to WALK from one location to another (both locations are ANYWHERE in the U.S.A.)  </h2>
     <h2>3. Your score is based on the accuracy of your guess -- but if you overestimate, you get 0 points!!! </h2>
     <h2>4. Don't forget Rule 1. </h2>
-   
-    
     <br>
     <p id = 'locOne'>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12331654.323968181!2d-107.60409444920087!3d36.808239781916456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54eab584e432360b%3A0x1c3bb99243deb742!2sUnited%20States!5e0!3m2!    1sen!2sus!4v1706738838616!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>  
+
+        <iframe src="https://maps.google.com/maps?q={{latOne}},{{lonOne}}&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+            width="300"
+            height="170"
+        ></iframe>    </p>
+    <h1> Location 1: {{ cityOne }}</h1>
+    <!--button type="button" onclick="generateLocOne()">Generate</button></body-->
+    <br>
+    <p id = 'locTwo'>
+
+        <iframe src="https://maps.google.com/maps?q={{latTwo}},{{lonTwo}}&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+            width="300"
+            height="170"
+        ></iframe>
+
     </p>
-    <h1> Location 1 </h1>
-    <button type="button" onclick="generateLocOne()">Generate</button></body>
 
+    <h1> Location 2: {{ cityTwo }} </h1>
+    <!--button type="button" onclick="generateLocTwo()" >Generate</button></body-->
+    <form action="/generateLocations" method="get"> <!-- or method="post" -->
+        <input type="submit" value="Generate Locations!" >
+    </form>
     <br>
-	
-  
-    <br>
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12331654.323968181!2d-107.60409444920087!3d36.808239781916456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x54eab584e432360b%3A0x1c3bb99243deb742!2sUnited%20States!5e0!3m2!1sen!2sus!4v1706738838616!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    <h1> Location 2 </h1>
-    <button type="button">Generate</button></body>
-
-<button type="button">Submit</button></body>
-
-
-
-
-
+    <div class = "container">
+        <form>
+            <label for="guess">Enter your guess: </label>
+            <input type="text" id = "guess">
+        </form>
+        <button type="button">Submit</button>
+    </div>
+</body>
 </html>
+        
