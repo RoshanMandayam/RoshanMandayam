@@ -19,7 +19,7 @@
     <h2>A single player map-based guessing game.  </h2>
     <h2>Rules </h2>
     <h2>1. Have Fun! </h2>
-    <h2>2. Your goal is to guess the amount of time it takes to WALK from one location to another (both locations are ANYWHERE in the U.S.A.)  </h2>
+    <h2>2. Your goal is to guess the amount of time (in SECONDS) it takes to WALK from one location to another (both locations are cities in the U.S.A. with the exact coordinates the same as the standard chosen by Google Maps for each city)  </h2>
     <h2>3. Your score is based on the accuracy of your guess -- but if you overestimate, you get 0 points!!! </h2>
     <h2>4. Don't forget Rule 1. </h2>
     <br>
@@ -48,11 +48,14 @@
     </form>
     <br>
     <div class = "container">
-        <form>
-            <label for="guess">Enter your guess: </label>
-            <input type="text" id = "guess">
+        
+        <label for="guess">Enter your guess: </label>
+        <input type="text" id = "guess">
+        <form action="/submitGuess" method = "get">
+            <input type="submit" value = "Submit (It will display here)->" > {{time}} seconds </input>
         </form>
-        <button type="button">Submit</button>
+        <h1> </h1>
+        
     </div>
 </body>
 </html>
