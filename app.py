@@ -4,7 +4,7 @@ import random
 import googlemaps
 from datetime import datetime
 from googlemaps import Client
-
+from flask import jsonify
 df = pd.read_csv('Data/uscities.csv')
 
 
@@ -22,9 +22,23 @@ lonOne =0
 lonTwo = 0
 time = 0
 '''
-@app.route("/")
+@app.route("/", methods = ['GET','POST'])
 def index():
-    return render_template('index.html')
+    
+    '''if request.method == 'GET':
+        session['cit1'] = random.randint(0,31119)
+        session['cityOne'] = df["city"][session['cit1']]
+        session['cit2'] = random.randint(0,31119)
+        session['cityTwo'] = df["city"][session['cit2']]
+        session['latOne'] = float(df["lat"][session['cit1']])
+        session['lonOne'] = float(df["lng"][session['cit1']])
+        session['latTwo'] = float(df["lat"][session['cit2']])
+        session['lonTwo'] = float(df["lng"][session['cit2']])
+        return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo']  )
+'''
+    return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo']  )
+
+    #return render_template('index.html')
 
 '''@app.route("/generateLocOne")
 def generateLocOne():
@@ -38,7 +52,28 @@ def generateLocTwo():
     cityTwo = df["city"][cit2]
     return render_template('index.html', cityOne = cityOne , cityTwo = cityTwo )
 '''
-@app.route("/generateLocations")
+
+@app.route('/create_file', methods=['POST','GET'])
+def create_file():
+    session['cit1'] = random.randint(0,31119)
+    session['cityOne'] = df["city"][session['cit1']]
+    session['cit2'] = random.randint(0,31119)
+    session['cityTwo'] = df["city"][session['cit2']]
+    session['latOne'] = float(df["lat"][session['cit1']])
+    session['lonOne'] = float(df["lng"][session['cit1']])
+    session['latTwo'] = float(df["lat"][session['cit2']])
+    session['lonTwo'] = float(df["lng"][session['cit2']])
+    return jsonify({"Location 2 Text" : "Location 2:" + session['cityTwo'],
+                    "Location 1 Text": "Location 1:" + session['cityOne'],
+                     "Location 2 Lat": session['latTwo'], 
+                      "Location 2 Lon": session['lonTwo'],
+                      "Location 1 Lat": session['latOne'],
+                      "Location 1 Lon": session['lonOne']})
+    if request.method == 'GET':
+        
+        return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo']  )
+
+'''@app.route("/generateLocations", methods = ['POST'])
 def generateLocations():
     #session['cityOne'] = "blah"
     session['cit1'] = random.randint(0,31119)
@@ -49,11 +84,12 @@ def generateLocations():
     session['lonOne'] = float(df["lng"][session['cit1']])
     session['latTwo'] = float(df["lat"][session['cit2']])
     session['lonTwo'] = float(df["lng"][session['cit2']])
-
+    #return 'it wworsk'
     return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo']  )
   
+'''
 
-@app.route("/submitGuess")
+@app.route("/submitGuess", methods = ['POST','GET'])
 def submitGuess():
     session['key'] = "AIzaSyASClaRoPWzq11Xo0cUQ1UpfJYtMd_XxoI"
     gmaps = Client(key=session['key'])
@@ -75,7 +111,7 @@ def submitGuess():
                                     )
     #return directions_result[0]['legs'][0]['distance']['text']
     #return directions_result[0]['legs'][0]['duration']['text']
-    print(directions_result[0]['legs'][0]['duration']['text'])
+    #print(directions_result[0]['legs'][0]['duration']['text'])
     #return directions_result[0]['legs'][0]['distance']['text']
    
     #print(cityOne)
@@ -90,22 +126,11 @@ def submitGuess():
     session['time'] = session['result']['rows'][0]['elements'][0]['duration']['text']
     '''
     session['time'] = directions_result[0]['legs'][0]['duration']['value']
-    return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo'], time=session['time']  )
-    
+    #return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo'], time=session['time']  )
+    return jsonify({"time": session['time']})
     #return render_template('index.html',cityOne = cityOne , cityTwo = cityTwo)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80)
 
 
-'''
-https://maps.googleapis.com/maps/api/distancematrix/json?key={0}&origins={1}&destinations={2}&mode=driving&language=en-EN&sensor=false".format(key,(session['orig']),str(session['dest']))
-
-https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyASClaRoPWzq11Xo0cUQ1UpfJYtMd_XxoI&origins=(34.9776,-91.5067)&destinations=(41.2128,-75.8993)&mode=driving&language=en-EN&sensor=false
-
-
-
-"https://maps.googleapis.com/maps/api/distancematrix/json?key=AIzaSyASClaRoPWzq11Xo0cUQ1UpfJYtMd_XxoI&origins=(34.9776,-91.5067)&destinations=(41.2128,-75.8993)&mode=driving&language=en-EN&sensor=false"
-
-
-'''
