@@ -1,56 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <!--link rel="stylesheet" href="styles.css"-->
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles.css') }}">
+
     <title>Are We There Yet?</title>
-    <style>
-        .container {
-        display: flex;
-        align-items: center;
-        }
 
-        button {
-        margin-left: 10px;
-        }
-
-
-    </style>
 </head>
 <body>
-    <h1>Are We There Yet?</h1>
-    <h2>A single player map-based guessing game.  </h2>
-    <h2>Rules </h2>
+    <h1 class="centered-title">Are We There Yet?</h1>
+    <h2 class="centered-subtitle">A single player map-based guessing game.  </h2>
+    <h1>Rules </h1>
     <h2>1. Have Fun! </h2>
-    <h2>2. Your goal is to guess the amount of time (in SECONDS) it takes to WALK from one location to another (both locations are cities in the U.S.A. with the exact coordinates the same as the standard chosen by Google Maps for each city)  </h2>
-    <h2>3. Your score is based on the accuracy of your guess -- but if you overestimate, you get 0 points!!! </h2>
-    <h2>4. Don't forget Rule 1. </h2>
+    <h2>2. Your goal is to guess the amount of time it takes (in SECONDS) to WALK from one city in the USA to another (exact locations shown on map) </h2>
+    <h2>3. Your score = Correct Answer - Your Answer  -- but if you overestimate, you get the worst score! Note: The lower the score the better. </h2>
+    <h2>4. Don't forget Rule 1 :) </h2>
     <br>
-    <p >
+    <div class="container-maps" >
+        <div class="container-labels">
+            <p >
 
-        <iframe  src="https://maps.google.com/maps?q={{latOne}},{{lonOne}}&t=&z=15&ie=UTF8&iwloc=&output=embed" 
-            width="300"
-            height="170"
-            id = 'locOne' ></iframe>    
-    </p>
-    <h1 id="changeit1"> Location 1: {{ cityOne }}</h1>
-    <!--button type="button" onclick="generateLocOne()">Generate</button></body-->
-    <br>
-    <p >
+                <iframe  src="https://maps.google.com/maps?q={{latOne}},{{lonOne}}&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                    width="300"
+                    height="170"
+                    id = 'locOne' ></iframe>    
+            </p>
+            <h1 id="changeit1"> Location 1: {{ cityOne }}</h1>
+        </div>
+        
+        
+        <!--button type="button" onclick="generateLocOne()">Generate</button></body-->
+        <br>
+        <div class="container-labels">
+            <p >
+    
+                <iframe src="https://maps.google.com/maps?q={{latTwo}},{{lonTwo}}&t=&z=15&ie=UTF8&iwloc=&output=embed" 
+                    width="300"
+                    height="170"
+                    id = 'locTwo'></iframe>
+        
+            </p>
+            <h1 id="changeit2"> Location 2: {{ cityTwo }} </h1>
+        </div>
+        
+        
+        
+        
+    </div>
 
-        <iframe src="https://maps.google.com/maps?q={{latTwo}},{{lonTwo}}&t=&z=15&ie=UTF8&iwloc=&output=embed" 
-            width="300"
-            height="170"
-            id = 'locTwo'></iframe>
-
-    </p>
-
-    <h1 id="changeit2"> Location 2: {{ cityTwo }} </h1>
+    
+        
+        
+    
     
     <!--form action="/generateLocations" method="post"> 
         <input type="submit" value="Generate Locations!" >
     </form>-->
     <body>
         
-        <button onclick="generateLocs()">Generate Locations</button>
+        <button onclick="generateLocs()" class="button">Generate Locations</button>
     </body>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -81,32 +89,44 @@
     </script>
 
     <br>
+    <br>
+    <br>
+
     <div class = "container">
         
         <label for="guess">Enter your guess: </label>
         <input type="text" id = "guess">
 
-        <input  type="submit" onclick="submitGuess()" value = "Submit (It will display here)->" > {{time}}  </input>
+        <input  type="submit" onclick="submitGuess()" value = "Submit" >   </input>
         
-        <h1 id= "corrAns">  </h1>
+        
         
     </div>
 
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h2 id= "corrAns">  </h2>
+    <h2 id= "score">  </h2>
     <script>
         
         function submitGuess() {
-            //var locTwoText = document.getElementById("changeit2");
-            //var locOneText = document.getElementById("changeit1");
-            //var locOne = document.getElementById("locOne")
+            
             var timeAns = document.getElementById("corrAns");
+            var myScore = document.getElementById("score");
             $.ajax({
                 type: "POST",
                 url: "{{ url_for('submitGuess') }}",
-                data: {"name":"Jim"},
+                data: {'guess' : document.getElementById("guess").value},
                 success: function(response) {
                     //locTwoText.innerHTML = response["Location 2 Text"];
                     //locOneText.innerHTML = response['Location 1 Text'];
                     timeAns.innerHTML = response['time'];
+                    myScore.innerHTML = response['myScore'];
                     //locTwo.src = "https://maps.google.com/maps?q=".concat(response['Location 2 Lat'],",",(response['Location 2 Lon']),"&t=&z=15&ie=UTF8&iwloc=&output=embed");
                     //locOne.src = "https://maps.google.com/maps?q=".concat(response['Location 1 Lat'],",",(response['Location 1 Lon']),"&t=&z=15&ie=UTF8&iwloc=&output=embed");
                 }
@@ -118,4 +138,3 @@
     </script>
 </body>
 </html>
-        <!--locOne.attr("src","https://maps.google.com/maps?q={{latOne}},{{lonTwo}}&t=&z=15&ie=UTF8&iwloc=&output=embed")-->
