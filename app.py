@@ -7,10 +7,11 @@ from googlemaps import Client
 from flask import jsonify
 
 df = pd.read_csv('Data/uscities.csv')
-print(df.shape)
+#print(df.shape)
 df = df.drop(df[df['state_name'] == 'Hawaii'].index)
-print(df.shape)
-
+#print(df.shape)
+df = df.drop(df[df['state_name'] == 'Alaska'].index)
+df = df.drop(df[df['state_name'] == 'Puerto Rico'].index)
 import simplejson#, urllib
 import urllib.request
 
@@ -43,18 +44,7 @@ def index():
 
     #return render_template('index.html')
 
-'''@app.route("/generateLocOne")
-def generateLocOne():
-    cit1 = random.randint(0,31119)
-    cityOne = df["city"][cit1]
-    return render_template('index.html', cityOne =cityOne, cityTwo = cityTwo )
 
-@app.route("/generateLocTwo")
-def generateLocTwo():
-    cit2 = random.randint(0,31119)
-    cityTwo = df["city"][cit2]
-    return render_template('index.html', cityOne = cityOne , cityTwo = cityTwo )
-'''
 
 @app.route('/create_file', methods=['POST','GET'])
 def create_file():
@@ -125,7 +115,7 @@ def submitGuess():
     #try:
     score = session['time'] - int(request.form['guess'])
     if score < 0:
-        score = 0
+        score = session['time']
     return jsonify({"time": "Correct Answer: " + str(session['time']) + " seconds",
                     "myScore": "Your Score: " + str(score) + " points!" })
     #return render_template('index.html',cityOne = cityOne , cityTwo = cityTwo)
