@@ -5,8 +5,11 @@ import googlemaps
 from datetime import datetime
 from googlemaps import Client
 from flask import jsonify
-df = pd.read_csv('Data/uscities.csv')
 
+df = pd.read_csv('Data/uscities.csv')
+print(df.shape)
+df = df.drop(df[df['state_name'] == 'Hawaii'].index)
+print(df.shape)
 
 import simplejson#, urllib
 import urllib.request
@@ -73,21 +76,7 @@ def create_file():
         
         return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo']  )
 
-'''@app.route("/generateLocations", methods = ['POST'])
-def generateLocations():
-    #session['cityOne'] = "blah"
-    session['cit1'] = random.randint(0,31119)
-    session['cityOne'] = df["city"][session['cit1']]
-    session['cit2'] = random.randint(0,31119)
-    session['cityTwo'] = df["city"][session['cit2']]
-    session['latOne'] = float(df["lat"][session['cit1']])
-    session['lonOne'] = float(df["lng"][session['cit1']])
-    session['latTwo'] = float(df["lat"][session['cit2']])
-    session['lonTwo'] = float(df["lng"][session['cit2']])
-    #return 'it wworsk'
-    return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo']  )
-  
-'''
+
 
 @app.route("/submitGuess", methods = ['POST','GET'])
 def submitGuess():
@@ -125,11 +114,23 @@ def submitGuess():
     return session['result']['rows'][0]['elements'][0]
     session['time'] = session['result']['rows'][0]['elements'][0]['duration']['text']
     '''
+    #if directions_result[0]['legs'][0]['duration']['value'] == None:
+     #   return "not possible to walk there,regenerate"
+    
+    #try:
     session['time'] = directions_result[0]['legs'][0]['duration']['value']
+    #except ValueError:
+     #   return "It is not possible to walk to one of the above cities, please generate again!"
     #return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo'], time=session['time']  )
-    return jsonify({"time": session['time']})
+    #try:
+    score = session['time'] - int(request.form['guess'])
+    if score < 0:
+        score = 0
+    return jsonify({"time": "Correct Answer: " + str(session['time']) + " seconds",
+                    "myScore": "Your Score: " + str(score) + " points!" })
     #return render_template('index.html',cityOne = cityOne , cityTwo = cityTwo)
-
+    #except:
+     #   raise Exception( "Please enter your ")
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80)
 
