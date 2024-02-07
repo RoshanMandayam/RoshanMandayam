@@ -70,7 +70,7 @@ def create_file():
 
 @app.route("/submitGuess", methods = ['POST','GET'])
 def submitGuess():
-    session['key'] = "AIzaSyASClaRoPWzq11Xo0cUQ1UpfJYtMd_XxoI"
+    session['key'] = "AIzaSyDF5OmFRJoUh2qk7KmI79Rk0Zdkcl4dbgM"
     gmaps = Client(key=session['key'])
 
     
