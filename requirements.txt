@@ -1,0 +1,8 @@
+pip
+#python==3.9.2
+flask==3.0.1
+werkzeug==3.0.1
+pandas==1.1.5 
+simplejson==3.19.2
+googlemaps==4.10.0
+

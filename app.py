@@ -6,6 +6,8 @@ from datetime import datetime
 from googlemaps import Client
 from flask import jsonify
 
+from flask_sqlalchemy import SQLAlchemy
+
 df = pd.read_csv('Data/uscities.csv')
 #print(df.shape)
 df = df.drop(df[df['state_name'] == 'Hawaii'].index)
@@ -40,6 +42,15 @@ def index():
         session['lonTwo'] = float(df["lng"][session['cit2']])
         return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo']  )
 '''
+    # session['cityOne'] = ""
+    # session['cit1'] = ""
+    # session['cityOne'] = ""
+    # session['cit2'] = ""
+    # session['cityTwo'] =""
+    # session['latOne'] = ""
+    # session['lonOne'] = ""
+    # session['latTwo'] = ""
+    # session['lonTwo'] = ""
     return render_template('index.html', cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo']  )
 
     #return render_template('index.html')
@@ -122,6 +133,6 @@ def submitGuess():
     #except:
      #   raise Exception( "Please enter your ")
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=8080)
 
 
