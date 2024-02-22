@@ -72,7 +72,7 @@
             var locOne = document.getElementById("locOne")
             $.ajax({
                 type: "GET",
-                url: "{{ url_for('create_file') }}",
+                url: "{{ url_for('genLocations') }}",
                 data: {"name":"Jim"},
                 success: function(response) {
                     locTwoText.innerHTML = response["Location 2 Text"];
@@ -123,18 +123,59 @@
                 url: "{{ url_for('submitGuess') }}",
                 data: {'guess' : document.getElementById("guess").value},
                 success: function(response) {
-                    //locTwoText.innerHTML = response["Location 2 Text"];
-                    //locOneText.innerHTML = response['Location 1 Text'];
                     timeAns.innerHTML = response['time'];
                     myScore.innerHTML = response['myScore'];
-                    //locTwo.src = "https://maps.google.com/maps?q=".concat(response['Location 2 Lat'],",",(response['Location 2 Lon']),"&t=&z=15&ie=UTF8&iwloc=&output=embed");
-                    //locOne.src = "https://maps.google.com/maps?q=".concat(response['Location 1 Lat'],",",(response['Location 1 Lon']),"&t=&z=15&ie=UTF8&iwloc=&output=embed");
+                    document.getElementById("test").innerHTML = "" 
+                    for (let i = 0; i < response['data'].length; i++) {
+                        
+                        // document.getElementById("test").innerHTML += response['data'][i]['id'] + "  "
+                        document.getElementById("test").innerHTML += response['data'][i]['date'] + "  "
+                        document.getElementById("test").innerHTML += response['data'][i]['score'] + "<br></br>"
+                        
+                    }
+                    
+                    //dataBoard = response['dataBoard'] ;
+                    // <table>
+                    //     <thead>
+                    //     <tr>
+                    //         <th>Score</th>
+                    //         <th>Date</th>
+                    //     </tr>
+                    //     </thead>
+                    //     <tbody>
+                            
+                    //     </tbody>
+                    // </table>
                 }
 
             })
+            document.getElementById("guess").value = ""
         }
 
 
     </script>
+    <!-- <p>
+        ID Date           Score
+    </p> -->
+    <p id = "test">
+
+    </p>
+    <!--table> 
+        <thead> 
+        <tr> 
+            <th>Score</th> 
+             <th>Date</th>
+        </tr> 
+        </thead> 
+        <tbody> 
+            {% for row in position %}  
+                <tr> 
+                    <td>{{row[0]}}</td> 
+                    <td>{{row[1]}}</td> 
+                </tr> 
+            {% endfor %} 
+        </tbody> 
+    </table-->
 </body>
+
 </html>
