@@ -9,7 +9,7 @@ from flask import jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 
-df = pd.read_csv('Data/uscities.csv')
+df = pd.read_csv('data/uscities.csv')
 #print(df.shape)
 df = df.drop(df[df['state_name'] == 'Hawaii'].index)
 #print(df.shape)
@@ -41,6 +41,12 @@ app.secret_key = "abcde2o38cniuwc"
 @app.route("/", methods = ['GET','POST'])
 def index():
     session['LeaderBoardData'] = ''
+    session['cityOne'] = ''
+    session['cityTwo'] = ''
+    session['latOne'] =''
+    session['latTwo']=''
+    session['lonOne']=''
+    session['lonTwo']=''
     return render_template('index.html', position = session['LeaderBoardData'], cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo']  )
 
 
@@ -97,9 +103,6 @@ def submitGuess():
     return jsonify({"time": "Correct Answer: " + str(session['time']) + " seconds",
                     "myScore": "Your Score: " + str(score) + " points!", "data": [{ "id": str(user.id) + " ;  " , "score": str(user.score) + " points ", "date":str(user.date_added) + " ; "} for user in board] }
                     )
-    #.update(
-     #                   { "data": [{ "id": user.id, "score": user.score} for user in board] }
-      #                  )'''
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080)

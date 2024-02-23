@@ -95,7 +95,7 @@
     <div class = "container">
         
         <label for="guess">Enter your guess: </label>
-        <input type="text" id = "guess">
+        <input type="number"  id = "guess" onkeydown= "javascript: return (event.keyCode !== 69 && event.keyCode !== 190 && event.keyCode !== 189 && event.keyCode !== 187)">
 
         <input  type="submit" onclick="submitGuess()" value = "Submit" >   </input>
         
