@@ -8,6 +8,7 @@ from flask import jsonify
 
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+from gmaps_api import calc_seconds
 
 df = pd.read_csv('data/uscities.csv')
 #print(df.shape)
@@ -71,25 +72,26 @@ def genLocations():
 
 @app.route("/submitGuess", methods = ['POST','GET'])
 def submitGuess():
-    session['key'] = "AIzaSyDF5OmFRJoUh2qk7KmI79Rk0Zdkcl4dbgM"
-    gmaps = Client(key=session['key'])
-
-    
-    gmaps = googlemaps.Client(key=session['key'])
-
     session['orig'] = session['latOne'],session['lonOne']
     session['dest'] = session['latTwo'],session['lonTwo']
 
-    now = datetime.now()
-    directions_result = gmaps.directions(session['orig'],
-                                     session['dest'],
-                                     mode="walking",
-                                     departure_time=now
-                                    )
+    # session['key'] = "AIzaSyDF5OmFRJoUh2qk7KmI79Rk0Zdkcl4dbgM"
+    # gmaps = Client(key=session['key'])
+
+    
+    # gmaps = googlemaps.Client(key=session['key'])
+
+
+    # now = datetime.now()
+    # directions_result = gmaps.directions(session['orig'],
+    #                                  session['dest'],
+    #                                  mode="walking",
+    #                                  departure_time=now
+    #                                 )
  
 
-    session['time'] = directions_result[0]['legs'][0]['duration']['value']
-    
+    # session['time'] = directions_result[0]['legs'][0]['duration']['value']
+    session['time'] = calc_seconds(session['orig'],session['dest'])
     score = session['time'] - int(request.form['guess'])
     if score < 0:
         score = session['time']

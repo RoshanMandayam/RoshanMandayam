@@ -12,7 +12,8 @@ This project was built using Docker 4.26.1, may or may not work with later versi
 
 
 If the leaderboard.db does not exist, or if you want to recreate a new leaderboard, use the following commands in terminal(after navigating to the current project folder):
->>> python
+Note: the docker container must be running before you use these commands
+>>> docker exec -it NAME_OF_YOUR_CONTAINER python3
 >>> from app import db
 >>> db.create_all()
 >>> exit()
