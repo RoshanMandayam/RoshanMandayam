@@ -17,8 +17,4 @@ EXPOSE 8080
 
 # Run app.py when the container launches
 CMD ["python", "app.py","--host", "0.0.0.0"]
-
-
-
-
-#CMD ["flask", "run", "--host", "0.0.0.0"]
+#CMD ["pytest"]
