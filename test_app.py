@@ -12,13 +12,6 @@ from werkzeug.testapp import test_app as te
 def test_index():
     
     response = app.test_client().get("/")
-    #print (response.data)
-    #assert b"Location 2" in ( response.data )
-    # with app.test_request_context():
-    #     test = genLocations()
-        
-    #     return request.get_json
-    #     #assert (test['Location 2 Text'] == "L")
     assert b"<title>Are We There Yet?</title>" in response.data
     assert b"A single player map-based guessing game." in response.data
 
