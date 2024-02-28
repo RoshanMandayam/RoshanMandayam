@@ -1,8 +1,11 @@
 name: Run Pytest on Pull Request
 
 on:
+
   push:
-    
+    branches:
+      - main
+
 
 jobs:
   test:
