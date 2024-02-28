@@ -6,8 +6,7 @@ from flask import Flask,request
 from flask import json
 from werkzeug.test import Client
 from werkzeug.testapp import test_app as te
-# app = Flask(__name__)
-#c = Client(te)
+
 
 
 def test_index():
@@ -23,7 +22,6 @@ def test_index():
     assert b"<title>Are We There Yet?</title>" in response.data
     assert b"A single player map-based guessing game." in response.data
 
-    #assert "It worked!"
 
 def test_genLocations():
     response = app.test_client().get("/genLocations")

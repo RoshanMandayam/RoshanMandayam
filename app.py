@@ -10,6 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from gmaps_api import calc_seconds
 
+#reading in data from csv to gather city info
 df = pd.read_csv('data/uscities.csv')
 #print(df.shape)
 df = df.drop(df[df['state_name'] == 'Hawaii'].index)
@@ -19,14 +20,14 @@ df = df.drop(df[df['state_name'] == 'Puerto Rico'].index)
 import simplejson#, urllib
 import urllib.request
 
-
+#creating the flask app
 app = Flask(__name__)
 ma = Marshmallow(app)
 app.app_context().push()
+#creating the sqlite database
 app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///leaderboard.db'
-
 db = SQLAlchemy(app)
-
+#creating data model for the leaderboard
 class leaderBoard(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     score = db.Column(db.Integer, nullable=False)
@@ -38,7 +39,7 @@ class leaderBoard(db.Model):
 app.secret_key = "abcde2o38cniuwc"
 
 
-
+#home page
 @app.route("/", methods = ['GET','POST'])
 def index():
     session['LeaderBoardData'] = ''
@@ -50,7 +51,7 @@ def index():
     session['lonTwo']=''
     return render_template('index.html', position = session['LeaderBoardData'], cityOne = session['cityOne'] , cityTwo = session['cityTwo'], latOne =session['latOne'], latTwo=session['latTwo'],lonOne=session['lonOne'],lonTwo=session['lonTwo']  )
 
-
+#when the generate locations  button is clicked, we  set a random city and display it on the map html
 @app.route('/genLocations', methods=['POST','GET'])
 def genLocations():
     session['LeaderBoardData'] = ''
@@ -69,7 +70,8 @@ def genLocations():
                       "Location 1 Lat": session['latOne'],
                       "Location 1 Lon": session['lonOne']})
 
-
+#ssubmit the user's guess and post to the database
+#also calls gmaps api to calculate the seconds
 @app.route("/submitGuess", methods = ['POST','GET'])
 def submitGuess():
     session['orig'] = session['latOne'],session['lonOne']
