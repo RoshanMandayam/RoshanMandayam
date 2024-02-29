@@ -11,7 +11,7 @@ from flask_marshmallow import Marshmallow
 from gmaps_api import calc_seconds
 
 #reading in data from csv to gather city info
-df = pd.read_csv('data/uscities.csv')
+df = pd.read_csv('Data/uscities.csv')
 #print(df.shape)
 df = df.drop(df[df['state_name'] == 'Hawaii'].index)
 #print(df.shape)
