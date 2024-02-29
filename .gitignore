@@ -4,3 +4,6 @@
 
 #Ignore Mac System files
 .DS_store
+
+#make sure the cases are the same in folders/files
+git config core.ignorecase false
