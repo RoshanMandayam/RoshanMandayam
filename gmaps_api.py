@@ -3,7 +3,7 @@ from datetime import datetime
 from googlemaps import Client
 
 def calc_seconds(orig,dest):
-    keyG = "AIzaSyDF5OmFRJoUh2qk7KmI79Rk0Zdkcl4dbgM"
+    keyG = "YOURGMAPSAPIKEY"
     gmaps = Client(key=keyG)
 
     
