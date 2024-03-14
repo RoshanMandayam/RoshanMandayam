@@ -36,7 +36,7 @@ class leaderBoard(db.Model):
     def __repr__(self):
         return '<score %r>' % self.score
 
-app.secret_key = "abcde2o38cniuwc"
+app.secret_key = "YOURSECRETKEY"
 
 
 #home page
